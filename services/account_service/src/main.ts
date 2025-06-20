@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle("Account Service")
-    .setDescription("Handles account transactions")
+    .setTitle("Auth Service")
+    .setDescription("Handles authantication transactions")
     .setVersion("1.0")
     .build();
 
