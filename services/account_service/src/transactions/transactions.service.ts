@@ -5,11 +5,11 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { TransactionImpact } from "../entities/transaction-impact.entity";
+import { TransactionType } from "../entities/transaction-type.entity";
+import { Transaction } from "../entities/transaction.entity";
 import { TransactionTypeRulesMap } from "./constants/transaction-type.constants";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
-import { TransactionImpact } from "./entities/transaction-impact.entity";
-import { TransactionType } from "./entities/transaction-type.entity";
-import { Transaction } from "./entities/transaction.entity";
 
 @Injectable()
 export class TransactionsService {
@@ -34,6 +34,7 @@ export class TransactionsService {
     const transactionType = await this.transactionTypeRepo.findOne({
       where: { code: dto.transactionTypeCode },
     });
+
     if (!transactionType) {
       throw new NotFoundException("Transaction type not found");
     }

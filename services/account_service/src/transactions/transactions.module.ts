@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { TransactionImpact } from "./entities/transaction-impact.entity";
-import { TransactionType } from "./entities/transaction-type.entity";
-import { Transaction } from "./entities/transaction.entity";
+import { TransactionImpact } from "../entities/transaction-impact.entity";
+import { TransactionType } from "../entities/transaction-type.entity";
+import { Transaction } from "../entities/transaction.entity";
 import { TransactionsController } from "./transactions.controller";
 import { TransactionsService } from "./transactions.service";
 

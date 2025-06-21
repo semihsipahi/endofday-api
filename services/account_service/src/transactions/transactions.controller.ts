@@ -1,15 +1,13 @@
-// src/transactions/transactions.controller.ts
-
 import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Transaction } from "../entities/transaction.entity";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
-import { Transaction } from "./entities/transaction.entity";
 import { TransactionsService } from "./transactions.service";
 
 @ApiTags("Transactions")
 @Controller("transactions")
 export class TransactionsController {
-  constructor(private readonly trxService: TransactionsService) {}
+  constructor(private readonly transactionService: TransactionsService) {}
 
   @Post()
   @ApiOperation({ summary: "Yeni işlem oluştur" })
@@ -21,7 +19,7 @@ export class TransactionsController {
   @ApiResponse({ status: 400, description: "Geçersiz işlem veya eksik alan" })
   async create(@Body() dto: CreateTransactionDto): Promise<Transaction> {
     try {
-      return await this.trxService.createTransaction(dto);
+      return await this.transactionService.createTransaction(dto);
     } catch (err) {
       throw new BadRequestException(err.message);
     }

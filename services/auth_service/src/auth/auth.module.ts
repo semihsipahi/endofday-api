@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { Branch } from "../entities/branch/branch.entity";
+import { User } from "../entities/users/user.entity";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { Branch } from "./entities/branch/branch.entity";
-import { User } from "./entities/users/user.entity";
 import { RolesGuard } from "./guards/roles.guard";
 import { JwtStrategy } from "./jwt.strategy";
 
