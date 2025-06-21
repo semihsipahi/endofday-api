@@ -1,48 +1,18 @@
-INSERT INTO transaction_types (id, name, code, description, affects_stock, affects_cash, balance_increase) VALUES
--- 1. Gold Entry
-(gen_random_uuid(), 'Gold Entry', 'GOLD_ENTRY', 'Cari hesaptan altın girişi (stok artar, borç artar)', TRUE, FALSE, TRUE),
-
--- 2. Discount Credit
-(gen_random_uuid(), 'Discount Credit', 'DISCOUNT_CREDIT', 'Cari borcuna iskonto uygulanır (borç azalır)', FALSE, FALSE, FALSE),
-
--- 3. Discount Debit
-(gen_random_uuid(), 'Discount Debit', 'DISCOUNT_DEBIT', 'Cari alacağına iskonto verilir (alacak azalır)', FALSE, FALSE, FALSE),
-
--- 4. Returned Out
-(gen_random_uuid(), 'Returned Out', 'RETURNED_OUT', 'Daha önce alınan ürün iade edilir (stok azalır, borç azalır)', TRUE, FALSE, FALSE),
-
--- 5. Conversion
-(gen_random_uuid(), 'Conversion', 'CONVERSION', 'Altının ayarı değiştirilir (stok içi giriş/çıkış)', TRUE, FALSE, FALSE),
-
--- 6. Scrap Out
-(gen_random_uuid(), 'Scrap Out', 'SCRAP_OUT', 'Hurda çıkışı yapılır (stok azalır)', TRUE, FALSE, FALSE),
-
--- 7. Scrap In
-(gen_random_uuid(), 'Scrap In', 'SCRAP_IN', 'Hurda girişi yapılır (stok artar, borç artar)', TRUE, FALSE, TRUE),
-
--- 8. Material Out
-(gen_random_uuid(), 'Material Out', 'MATERIAL_OUT', 'Malzeme çıkışı yapılır (stok azalır)', TRUE, FALSE, FALSE),
-
--- 9. Material In
-(gen_random_uuid(), 'Material In', 'MATERIAL_IN', 'Malzeme girişi yapılır (stok artar, borç artar)', TRUE, FALSE, TRUE),
-
--- 10. Offset
-(gen_random_uuid(), 'Offset', 'OFFSET', 'Stok ve para karşılıklı mahsuplaşır (borç/alacak kapanır)', FALSE, FALSE, FALSE),
-
--- 11. Material Return
-(gen_random_uuid(), 'Material Return', 'MATERIAL_RETURN', 'Cariye iade edilen malzeme (stok azalır, alacak azalır)', TRUE, FALSE, FALSE),
-
--- 12. Material Sale
-(gen_random_uuid(), 'Material Sale', 'MATERIAL_SALE', 'Cariye malzeme satışı (stok azalır, alacak artar)', TRUE, FALSE, FALSE),
-
--- 13. Cash Payment
-(gen_random_uuid(), 'Cash Payment', 'CASH_PAYMENT', 'Cariye nakit ödeme (nakit azalır, borç azalır)', FALSE, TRUE, FALSE),
-
--- 14. Cash Collection
-(gen_random_uuid(), 'Cash Collection', 'CASH_COLLECTION', 'Cariden nakit tahsilat (nakit artar, alacak azalır)', FALSE, TRUE, FALSE),
-
--- 15. Custom Product Out
-(gen_random_uuid(), 'Custom Product Out', 'CUSTOM_PRODUCT_OUT', 'Özel ürün çıkışı yapılır (stok azalır, alacak artar)', TRUE, FALSE, FALSE),
-
--- 16. Custom Product In
-(gen_random_uuid(), 'Custom Product In', 'CUSTOM_PRODUCT_IN', 'Özel ürün girişi yapılır (stok artar, borç artar)', TRUE, FALSE, TRUE);
+INSERT INTO transaction_types (id, code, name, description) VALUES
+  ('11111111-1111-1111-1111-111111111111', 'GOLD_ENTRY', 'Gold Entry', 'Altın Girişi'),
+  ('22222222-2222-2222-2222-222222222222', 'DISCOUNT_CREDIT', 'Discount Credit', 'İskonto Alacak'),
+  ('33333333-3333-3333-3333-333333333333', 'DISCOUNT_DEBIT', 'Discount Debit', 'İskonto Borç'),
+  ('44444444-4444-4444-4444-444444444444', 'RETURNED_OUT', 'Returned Out', 'Çıkan İade'),
+  ('55555555-5555-5555-5555-555555555555', 'CONVERSION', 'Conversion', 'Çevirme'),
+  ('66666666-6666-6666-6666-666666666666', 'SCRAP_OUT', 'Scrap Out', 'Hurda Çıkış'),
+  ('77777777-7777-7777-7777-777777777777', 'SCRAP_IN', 'Scrap In', 'Hurda Giriş'),
+  ('88888888-8888-8888-8888-888888888888', 'MATERIAL_OUT', 'Material Out', 'Malzeme Çıkış'),
+  ('99999999-9999-9999-9999-999999999999', 'MATERIAL_IN', 'Material In', 'Malzeme Giriş'),
+  ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'OFFSET', 'Offset', 'Mahzup'),
+  ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'MATERIAL_RETURN', 'Material Return', 'Malzeme İade'),
+  ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'MATERIAL_SALE', 'Material Sale', 'Malzeme Satış'),
+  ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'CASH_PAYMENT', 'Cash Payment', 'Kasa Ödeme'),
+  ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'CASH_COLLECTION', 'Cash Collection', 'Kasa Tahsilat'),
+  ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'CUSTOM_PRODUCT_OUT', 'Custom Product Out', 'Özel Ürün Çıkış'),
+  ('00000000-0000-0000-0000-000000000000', 'CUSTOM_PRODUCT_IN', 'Custom Product In', 'Özel Ürün Giriş')
+ON CONFLICT (code) DO NOTHING;

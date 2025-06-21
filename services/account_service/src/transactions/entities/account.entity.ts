@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Branch } from "./branch.entity";
 
 @Entity({ name: "accounts" })
 export class Account {
@@ -10,4 +17,8 @@ export class Account {
 
   @Column()
   type: string;
+
+  @ManyToOne(() => Branch)
+  @JoinColumn({ name: "branch_id" })
+  branch: Branch;
 }

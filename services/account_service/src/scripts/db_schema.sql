@@ -1,65 +1,77 @@
-CREATE TABLE account_types (
-    id UUID PRIMARY KEY,
-    code VARCHAR(50) UNIQUE NOT NULL, -- örnek: 'customer', 'supplier'
-    name VARCHAR(100) NOT NULL        -- örnek: 'Müşteri', 'Tedarikçi'
-);
--- Sistemdeki tüm cari tiplerini tanımlar.
--- code: sistemsel kullanım, name: gösterim amacıyla
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- branches tablosu
+CREATE TABLE branches (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  code TEXT NOT NULL
+);
+
+-- accounts tablosu
 CREATE TABLE accounts (
-    id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    account_type_id UUID NOT NULL REFERENCES account_types(id),
-    balance NUMERIC(18, 4) DEFAULT 0
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  branch_id UUID NOT NULL,
+  CONSTRAINT fk_accounts_branch FOREIGN KEY (branch_id) REFERENCES branches(id)
 );
--- account_type_id: account_types tablosuna bağlı foreign key
 
+-- currencies tablosu
+CREATE TABLE currencies (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  code TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL
+);
+
+-- products tablosu
+CREATE TABLE products (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  unit TEXT NOT NULL,
+  category TEXT NOT NULL
+);
+
+-- users tablosu
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  full_name TEXT NOT NULL,
+  clerk_id TEXT NOT NULL UNIQUE,
+  role TEXT NOT NULL
+);
+
+-- transaction_types tablosu
 CREATE TABLE transaction_types (
-    id UUID PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    code VARCHAR(100) NOT NULL UNIQUE,
-    affects_stock BOOLEAN DEFAULT FALSE,
-    affects_cash BOOLEAN DEFAULT FALSE,
-    balance_increase BOOLEAN -- TRUE: borç artışı, FALSE: alacak artışı
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  code TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  description TEXT
 );
--- Örnek kayıt: name = 'Gold Entry', code = 'GOLD_ENTRY'
--- affects_stock: stokta hareket yaratır mı?
--- affects_cash: nakit işlemi var mı?
 
+-- transactions tablosu
 CREATE TABLE transactions (
-    id UUID PRIMARY KEY,
-    account_id UUID NOT NULL REFERENCES accounts(id),
-    transaction_type_id UUID NOT NULL REFERENCES transaction_types(id),
-    date TIMESTAMP DEFAULT NOW(),
-    description TEXT,
-    reference_code VARCHAR(100)
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  account_id UUID NOT NULL,
+  transaction_type_id UUID NOT NULL,
+  created_by UUID NOT NULL,
+  date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  description TEXT,
+  reference_code TEXT,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  deleted_at TIMESTAMP WITHOUT TIME ZONE,
+
+  CONSTRAINT fk_transactions_account FOREIGN KEY (account_id) REFERENCES accounts(id),
+  CONSTRAINT fk_transactions_transaction_type FOREIGN KEY (transaction_type_id) REFERENCES transaction_types(id),
+  CONSTRAINT fk_transactions_created_by FOREIGN KEY (created_by) REFERENCES users(id)
 );
--- Tüm işlemlerin ortak tablosu
--- reference_code: fatura no, belge no vs.
 
-CREATE TABLE stock_movements (
-    id UUID PRIMARY KEY,
-    transaction_id UUID NOT NULL REFERENCES transactions(id),
-    product_id UUID NOT NULL,
-    quantity NUMERIC(18, 4) NOT NULL,
-    unit VARCHAR(20) DEFAULT 'gram',
-    direction VARCHAR(10) CHECK (direction IN ('in', 'out'))
+-- transaction_impacts tablosu
+CREATE TABLE transaction_impacts (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  transaction_id UUID NOT NULL,
+  currency_id UUID NOT NULL,
+  debit NUMERIC DEFAULT 0 NOT NULL,
+  credit NUMERIC DEFAULT 0 NOT NULL,
+
+  CONSTRAINT fk_impacts_transaction FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,
+  CONSTRAINT fk_impacts_currency FOREIGN KEY (currency_id) REFERENCES currencies(id)
 );
--- Stokta ürün bazlı giriş-çıkış kayıtları
--- direction: giriş mi çıkış mı (örnek: hurda çıkış = out)
-
-CREATE TABLE cash_movements (
-    id UUID PRIMARY KEY,
-    transaction_id UUID NOT NULL REFERENCES transactions(id),
-    amount NUMERIC(18, 4) NOT NULL,
-    currency VARCHAR(10) DEFAULT 'TRY',
-    direction VARCHAR(10) CHECK (direction IN ('in', 'out')),
-    cashbox_id UUID
-);
--- direction: 'in' = tahsilat, 'out' = ödeme
--- cashbox_id: hangi kasa kullanıldı
-
-select * from transaction_types
-
-
