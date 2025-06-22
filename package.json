@@ -1,0 +1,28 @@
+{
+  "name": "endofday-api",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "start:account": "npm --workspace=services/account_service start",
+    "start:auth": "npm --workspace=services/auth_service start",
+    "start:transaction": "npm --workspace=services/transaction_service start",
+    "start:all": "concurrently \"npm:start:account\" \"npm:start:auth\" \"npm:start:transaction\"",
+    "test:all": "npm run test --workspaces --if-present",
+    "migration:generate": "npm run migration:generate --workspaces --if-present",
+    "migration:run": "npm run migration:run --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "concurrently": "^8.0.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.25",
+    "pg": "^8.11.1"
+  }
+}

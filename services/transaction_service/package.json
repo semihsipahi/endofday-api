@@ -1,7 +1,7 @@
 {
-  "name": "account_service",
+  "name": "transaction_service",
   "version": "1.0.0",
-  "description": "Microservice handling account transactions",
+  "description": "Microservice handling transactions",
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"SUCCESS WORKSPACE\" && exit 0",
