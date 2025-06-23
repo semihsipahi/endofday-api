@@ -26,6 +26,14 @@ export class TransactionTypeService {
     return await this.transactionTypeRepository.find();
   }
 
+  async getTransactionTypeById(id: string): Promise<TransactionType> {
+    return await this.transactionTypeRepository.findOneByOrFail({ id });
+  }
+
+  async getTransactionTypeByCode(code: string): Promise<TransactionType> {
+    return await this.transactionTypeRepository.findOneBy({ code });
+  }
+
   async updateTransactionType(
     id: string,
     dto: Partial<UpdateTransactionTypeDto>
