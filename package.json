@@ -8,7 +8,8 @@
   "scripts": {
     "start:account": "npm --workspace=services/account_service start",
     "start:auth": "npm --workspace=services/auth_service start",
-    "start:transaction": "npm --workspace=services/transaction_service start",
+    "build:transaction": "npm --workspace=services/transaction_service run build",
+    "start:transaction": "npm --workspace=services/transaction_service run start:dev",
     "start:all": "concurrently \"npm:start:account\" \"npm:start:auth\" \"npm:start:transaction\"",
     "test:all": "npm run test --workspaces --if-present",
     "migration:generate": "npm run migration:generate --workspaces --if-present",

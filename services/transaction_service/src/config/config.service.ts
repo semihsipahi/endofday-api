@@ -2,6 +2,8 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 const entitiesPath = __dirname + "/../**/*.entity.{ts,js}";
 
+console.log("DB_PASS:", process.env.DB_PASS);
+
 export const configService = {
   getTypeOrmConfig: (): TypeOrmModuleOptions => ({
     type: "postgres",
